@@ -43,7 +43,7 @@ def ecosystem_portrayal(agent):
 
 colors = ["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
           "#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
-height = 200
+height = 75
 width = height
 canvas_element = CanvasGrid(ecosystem_portrayal, height, width, 750, 750) #last two parameters here affect the drawing area
 chart_element_count = ChartModule(
