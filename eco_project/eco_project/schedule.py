@@ -49,8 +49,37 @@ class RandomActivationByBreed(RandomActivation):
                       the next one.
         """
         if by_breed:
-            for agent_class in self.agents_by_breed:
-                self.step_breed(agent_class)
+            breeds_list = list(self.agents_by_breed.keys())
+            self.model.random.shuffle(breeds_list)
+            herbivores = [] # Holds the herbivore classes
+            carnivores = [] # Holds the carnivore classes
+            grass_class = None # Only one grass class
+            for agent_class in breeds_list:
+                if len(self.agents_by_breed[agent_class].keys()) <= 0:
+                    continue # Ignore extinct classes
+                else:
+                    sample = self.agents_by_breed[agent_class][list(self.agents_by_breed[agent_class].keys())[0]] # So we can access its tags
+                    if hasattr(sample, "tags"):
+                        if "carnivore" in sample.tags:
+                            carnivores.append(agent_class)
+                        elif "herbivore" in sample.tags:
+                            herbivores.append(agent_class)
+                        else:
+                            raise ValueError("Found an organism that's neither herbivore nor carnivore!")
+                    else:
+                        if grass_class is not None:
+                            raise ValueError("Found more than one class without tags!")
+                        else:
+                            grass_class = agent_class
+    
+            for herbivore_class in herbivores: # Herbivores move first, randomized
+                self.step_breed(herbivore_class)
+            for carnivore_class in carnivores: # Then carnivores
+                self.step_breed(carnivore_class)
+            self.step_breed(grass_class)       # Then grass grows
+
+            # Example of turns: (aardvark, zebra, wolf, tiger, grass); (zebra, aardvard, tiger, wolf, grass). Herbivores always get one and only one turn between each carnivore turn.
+
             self.steps += 1
             self.time += 1
         else:
