@@ -6,16 +6,27 @@ A model where agents are added in and can interact with each other to get energy
 
 ## Files
 run.py -- use this to start the server (e.g. python run.py)
+
 eco_project/agents.py -- generic agents used by the model (grass is defined here) 
+
 eco_project/model.py -- where the model is constructed, populations are made, and time steps for the entire system are defined
+
 eco_project/random_walk.py -- defines the RandomWalk class that all animal agents extend
+
 eco_project/schedule.py -- defines data analysis and gathering parts of the model
+
 eco_project/server.py -- sets up the web browser interface
+
 eco_project/test_random_walk.py -- a test file for the RandomWalk class
+
 student_agents/ -- this directory is where all the agent files and their photos are placed
+
 student_agents/*.png -- the photo files for each agent's display 
+
 student_agents/basic_carnivore.py -- this Agent demonstrates the basic behavior of a carnivore, looking for prey, and consuming them
+
 student_agents/basic_herbivore.py -- this Agent demonstrates the basic behavior of a herbivore, look for grass, consume it
+
 student_agents/sheep_wolf_edited/* -- the modified Sheep and Wolf agents from the model this was built from, you can use these for inspiration, but dont use them directly.
 
 ## Instructions for students
@@ -35,11 +46,11 @@ to implement. Ensure you do the following:
 You can edit code in a few places:
 1. in __init__() you can add any tags you want to the list, and any other parameters your agent might need (reproduction_threshold is an example -- you can use or remove this)
 2. in step() there are several parts of the code
- 1. 'MOVE' - change the code here for how your Agent moves, or leave it random
- 2. 'METABOLISM' - do not change this block
- 3. 'EAT' - this is where your Agent seeks and acquires energy, follow the constraints in the comments
- 4. 'DEATH' - do not change this block
- 5. 'REPRODUCTION' - this is where your Agent seeks to make copies of itself, follow the constraints in the code
+  1. 'MOVE' - change the code here for how your Agent moves, or leave it random
+  2. 'METABOLISM' - do not change this block
+  3. 'EAT' - this is where your Agent seeks and acquires energy, follow the constraints in the comments
+  4. 'DEATH' - do not change this block
+  5. 'REPRODUCTION' - this is where your Agent seeks to make copies of itself, follow the constraints in the code
 
 Your new files (.py and .png) simply need to be dropped into the 'student_agents' folder and then you can execute 'python run.py' from the root directory to run your model with your new Agents. If you want to remove the 'basic' agents feel free to just move the .py files to the 'sheep_wolf_folder' and they will be ignored.
 
