@@ -12,7 +12,7 @@ from os.path import dirname, basename, isfile, join
 import glob
 modules = glob.glob(join(dirname(__file__)+"/student_agents/", "*.py"))
 __all__ = [ "eco_project.student_agents."+basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
-print("Loading these Agents: " + ",".join(__all__))
+print("Loading these Agents:\n\t" + "\n\t".join(__all__))
 agent_types = [importlib.import_module(classname).EcoAgent for classname in __all__]
 ##################################################################
 
@@ -23,9 +23,9 @@ def ecosystem_portrayal(agent):
     portrayal = {}
     if type(agent) is GrassPatch:
         if agent.fully_grown:
-            portrayal["Color"] = ["#00FF00", "#00CC00", "#009900"]
+            portrayal["Color"] = ["#84e184", "#adebad", "#d6f5d6"]#"green"#["#00FF00", "#00CC00", "#009900"]
         else:
-            portrayal["Color"] = ["#84e184", "#adebad", "#d6f5d6"]
+            portrayal["Color"] = "white"#["#84e184", "#adebad", "#d6f5d6"]
         portrayal["Shape"] = "rect"
         portrayal["Filled"] = "true"
         portrayal["Layer"] = 0
@@ -40,12 +40,16 @@ def ecosystem_portrayal(agent):
 
     return portrayal
 
-
-colors = ["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
-          "#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
-height = 75
+colors = ["red","green","blue","pink","orange","violet","black"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
+          #"#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
+height = 20
 width = height
-canvas_element = CanvasGrid(ecosystem_portrayal, height, width, 750, 750) #last two parameters here affect the drawing area
+small = True
+if (small == True):
+    size = 500
+else:
+    size = 1500
+canvas_element = CanvasGrid(ecosystem_portrayal, height, width, size, size) #last two parameters here affect the drawing area
 chart_element_count = ChartModule(
     [{"Label": a.name, "Color": colors[i]} for (i, a) in enumerate(agent_types)] #+
      #[{"Label": "Bear", "Color": "#BCEE68"}]
@@ -56,15 +60,20 @@ chart_element_energy = ChartModule(
 
 model_params = {
     "agent_types": agent_types,
-    "height":height,
-    "width":width,
-    "grass": UserSettableParameter("checkbox", "Grass Enabled", True),
-    "grass_regrowth_time": UserSettableParameter(
-        "slider", "Grass Regrowth Time", 20, 1, 50
-    )#,
-    # "initial_sheep": UserSettableParameter(
-    #     "slider", "Initial Sheep Population", 100, 10, 300
+    "canvas": canvas_element,
+    "initial_agents": 100,
+    "carnivore_metabolism": UserSettableParameter(
+         "number", "Carnivore metabolism", 0.7
+     ),
+    "herbivore_metabolism": UserSettableParameter(
+         "number", "Herbivore metabolism", 1.0
+     ),
+    # "grass_regrowth_time": UserSettableParameter(
+    #     "slider", "Grass Regrowth Time", 20, 1, 50
     # ),
+    "world_size": UserSettableParameter(
+         "number", "World Size", 20
+     )
     # "sheep_reproduce": UserSettableParameter(
     #     "slider", "Sheep Reproduction Rate", 0.04, 0.01, 1.0, 0.01
     # ),
@@ -87,6 +96,9 @@ model_params = {
     #     "slider", "Sheep Gain From Food", 4, 1, 10
     # ),
 }
+
+agent_params = { a.name:UserSettableParameter('checkbox', a.name, value=True) for a in agent_types}
+model_params.update(agent_params)
 
 server = ModularServer(
     Ecosystem, [canvas_element, chart_element_count, chart_element_energy], "Ecosystem", model_params

@@ -18,6 +18,7 @@ class EcoAgent(RandomWalker):
         super().__init__(unique_id, pos, model, moore=moore)
         self.energy = energy
         self.tags = ["herbivore"]
+        self.metabolism_cost = model.herbivore_metabolism
         # you can add other tags to the list above, other agents can
         # investigate these tags and make decisions based on them
         # all herbivore agents MUST include the tag "herbivore"
@@ -39,7 +40,7 @@ class EcoAgent(RandomWalker):
         # Reduce energy
         # all herbivorous organisms must lose 1 energy per step
         # don't change this
-        self.energy -= 1
+        self.energy -= self.metabolism_cost
 
         ######## EAT ###########
         # If there is grass available, eat it

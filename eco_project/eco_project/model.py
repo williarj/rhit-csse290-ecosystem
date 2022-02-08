@@ -35,7 +35,7 @@ class Ecosystem(Model):
     grass_regrowth_time = 30
     gain_from_food = 4
 
-    verbose = True  # Print-monitoring
+    verbose = False  # Print-monitoring
 
     description = (
         "A model for simulating ecosystem modelling."
@@ -46,13 +46,16 @@ class Ecosystem(Model):
     def __init__(
         self,
         agent_types,
-        height=20,
-        width=20,
+        canvas,
         initial_agents=100,
         reproduce=0.04,
         gain_from_food=2,
-        grass=False,
+        grass=True,
         grass_regrowth_time=30,
+        world_size = 20,
+        herbivore_metabolism = 1,
+        carnivore_metabolism = 0.7,
+        **kwargs
     ):
         """
         Create a new Wolf-Sheep model with the given parameters.
@@ -60,17 +63,26 @@ class Ecosystem(Model):
         """
         super().__init__()
         # Set parameters
+        #this doesnt work yet
+        canvas.grid_height = world_size
+        canvas.grid_width = world_size
+        #print(world_size)
         self.agent_types = agent_types
-        self.height = height
-        self.width = width
+        self.height = world_size
+        self.width = world_size
         self.initial_agents = initial_agents
         self.reproduce = reproduce
         self.gain_from_food = gain_from_food
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
+        self.herbivore_metabolism = herbivore_metabolism
+        self.carnivore_metabolism = carnivore_metabolism
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
+        #only keep the agents that are currently turned on
+        self.active_agents = filter(lambda a: kwargs[a.name], agent_types)
+
         data_dict = {
                 a.name: (lambda y: (lambda x: x.schedule.get_breed_count(y)))(a) for a in self.agent_types
             }
@@ -84,10 +96,10 @@ class Ecosystem(Model):
         self.datacollector = DataCollector(
             data_dict
         )
-        print(self.datacollector.model_reporters)
+        #print(self.datacollector.model_reporters)
 
-        # Create agents:
-        for agent_type in self.agent_types:
+        # Create active agents:
+        for agent_type in self.active_agents:
             for i in range(self.initial_agents):
                 x = self.random.randrange(self.width)
                 y = self.random.randrange(self.height)
