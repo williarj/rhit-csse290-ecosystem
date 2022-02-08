@@ -42,14 +42,14 @@ def ecosystem_portrayal(agent):
 
 colors = ["red","green","blue","pink","orange","violet","black"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
           #"#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
-height = 20
-width = height
+world_size = 20
+draw_size = 500
 small = True
 if (small == True):
-    size = 500
+    draw_size = 500
 else:
-    size = 1500
-canvas_element = CanvasGrid(ecosystem_portrayal, height, width, size, size) #last two parameters here affect the drawing area
+    draw_size = 1500
+canvas_element = CanvasGrid(ecosystem_portrayal, world_size, world_size, draw_size, draw_size) #last two parameters here affect the drawing area
 chart_element_count = ChartModule(
     [{"Label": a.name, "Color": colors[i]} for (i, a) in enumerate(agent_types)] #+
      #[{"Label": "Bear", "Color": "#BCEE68"}]
@@ -61,7 +61,9 @@ chart_element_energy = ChartModule(
 model_params = {
     "agent_types": agent_types,
     "canvas": canvas_element,
-    "initial_agents": 100,
+    "initial_agents": UserSettableParameter(
+         "number", "Initial agent Num", 100
+     ),
     "carnivore_metabolism": UserSettableParameter(
          "number", "Carnivore metabolism", 0.7
      ),
