@@ -40,15 +40,15 @@ def ecosystem_portrayal(agent):
 
     return portrayal
 
-colors = ["red","green","blue","pink","orange","violet","black"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
+colors = ["red","green","blue","pink","orange","violet","black","red","green","blue","pink","orange","violet","black"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
           #"#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
-world_size = 20
+world_size = 10
 draw_size = 500
 small = True
 if (small == True):
     draw_size = 500
 else:
-    draw_size = 1500
+    draw_size = 1000
 canvas_element = CanvasGrid(ecosystem_portrayal, world_size, world_size, draw_size, draw_size) #last two parameters here affect the drawing area
 chart_element_count = ChartModule(
     [{"Label": a.name, "Color": colors[i]} for (i, a) in enumerate(agent_types)] #+
@@ -74,7 +74,7 @@ model_params = {
     #     "slider", "Grass Regrowth Time", 20, 1, 50
     # ),
     "world_size": UserSettableParameter(
-         "number", "World Size", 20
+         "number", "World Size", world_size
      )
     # "sheep_reproduce": UserSettableParameter(
     #     "slider", "Sheep Reproduction Rate", 0.04, 0.01, 1.0, 0.01

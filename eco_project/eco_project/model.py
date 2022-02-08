@@ -15,7 +15,7 @@ from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from eco_project.agents import GrassPatch
+from eco_project.agents import GrassPatch, TagMap
 from eco_project.schedule import RandomActivationByBreed
 
 
@@ -78,6 +78,8 @@ class Ecosystem(Model):
         self.herbivore_metabolism = herbivore_metabolism
         self.carnivore_metabolism = carnivore_metabolism
 
+        self.global_tag_map = TagMap()
+
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
         #only keep the agents that are currently turned on
@@ -128,6 +130,10 @@ class Ecosystem(Model):
 
         self.running = True
         self.datacollector.collect(self)
+
+    def register_tag(self, tag, function):
+        if (not self.global_tag_map.has_tag(tag)):
+            self.global_tag_map.register_tag(tag, function)
 
     def step(self):
         self.schedule.step()

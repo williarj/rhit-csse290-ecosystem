@@ -31,6 +31,7 @@ class RandomWalker(Agent):
         self.pos = pos
         self.moore = moore
         self.tags = []
+        self.tag_map = model.global_tag_map
 
     def has_tag(self, tag):
         """
@@ -38,6 +39,11 @@ class RandomWalker(Agent):
         :return: True if the tag is found False otherwise
         """
         return tag in self.tags
+
+    def apply_tags_on_eat(self, food):
+        for tag in food.tags:
+            func_to_apply = self.tag_map.get_tag_function(tag)
+            if func_to_apply: func_to_apply(food, self)
 
     def random_move(self):
         """

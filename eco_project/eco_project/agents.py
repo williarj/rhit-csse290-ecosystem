@@ -1,5 +1,21 @@
 from mesa import Agent
 
+class TagMap():
+
+    def __init__(self):
+        self.tag_map = {}
+
+    def has_tag(self, tag):
+        return tag in self.tag_map.keys()
+
+    def register_tag(self, tag, function):
+        self.tag_map[tag] = function
+
+    def get_tag_function(self, tag):
+        if tag in self.tag_map.keys():
+            return self.tag_map[tag]
+        return None
+
 class GrassPatch(Agent):
     """
     A patch of grass that grows at a fixed rate and it is eaten by sheep
