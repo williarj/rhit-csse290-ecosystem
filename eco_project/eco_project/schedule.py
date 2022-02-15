@@ -98,7 +98,10 @@ class RandomActivationByBreed(RandomActivation):
         agent_keys = list(self.agents_by_breed[breed].keys())
         self.model.random.shuffle(agent_keys)
         for agent_key in agent_keys:
-            self.agents_by_breed[breed][agent_key].step()
+            try:
+                self.agents_by_breed[breed][agent_key].step()
+            except KeyError:
+                continue
 
     def get_breed_count(self, breed_class):
         """
