@@ -58,7 +58,10 @@ class RandomActivationByBreed(RandomActivation):
                 if len(self.agents_by_breed[agent_class].keys()) <= 0:
                     continue # Ignore extinct classes
                 else:
-                    sample = self.agents_by_breed[agent_class][list(self.agents_by_breed[agent_class].keys())[0]] # So we can access its tags
+                    try:
+                        sample = self.agents_by_breed[agent_class][list(self.agents_by_breed[agent_class].keys())[0]] # So we can access its tags
+                    except KeyError:
+                        continue #some individual dies before we tried to update it
                     if hasattr(sample, "tags"):
                         if "carnivore" in sample.tags:
                             carnivores.append(agent_class)
