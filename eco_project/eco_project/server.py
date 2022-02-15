@@ -40,15 +40,16 @@ def ecosystem_portrayal(agent):
 
     return portrayal
 
-colors = ["red","green","blue","pink","orange","violet","black","red","green","blue","pink","orange","violet","black"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
+colors = ["red","green","blue","pink","orange","violet","black","yellow", "cyan","aqua","beige","burlywood",
+          "darkolivegreen","darkorchid","darkorange","darkred","darkgoldenrod"]#["#666666", "#00FFFF", "#838B8B", "#E3CF57", "#8B7D6B", "	#0000FF", "#8A2BE2", "#FF4040", "#FF6103",
           #"#458B00", "#3D59AB", "#BCEE68", "#AA0000"]
-world_size = 10
+world_size = 50
 draw_size = 500
-small = True
+small = False
 if (small == True):
     draw_size = 500
 else:
-    draw_size = 1000
+    draw_size = 2000
 canvas_element = CanvasGrid(ecosystem_portrayal, world_size, world_size, draw_size, draw_size) #last two parameters here affect the drawing area
 chart_element_count = ChartModule(
     [{"Label": a.name, "Color": colors[i]} for (i, a) in enumerate(agent_types)] #+
